@@ -1,29 +1,10 @@
-# Rsbuild Project
+# Lexical img element sample
 
-## Setup
+based Rsbuild Project
 
-Install the dependencies:
+$generateNodesFromDOM does not generate `<img>` node,
+added `ImageNode` to support `<img>` tag
 
-```bash
-pnpm install
-```
+for testing quill migration,use copied quill.snow.css
 
-## Get Started
-
-Start the dev server:
-
-```bash
-pnpm dev
-```
-
-Build the app for production:
-
-```bash
-pnpm build
-```
-
-Preview the production build locally:
-
-```bash
-pnpm preview
-```
+<img src="./assets/sample-image.png"/>
