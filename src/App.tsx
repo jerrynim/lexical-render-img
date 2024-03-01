@@ -14,7 +14,7 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import { ImageNode } from "./ImageNode";
 import "./quill.snow.css";
-
+import { Toolbar } from "./toolbar";
 import { $generateNodesFromDOM } from "@lexical/html";
 
 const theme = {
@@ -70,6 +70,7 @@ function Editor() {
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
+            <Toolbar />
             <div className="detail">
                 <div className="quill">
                     <div className="ql-container ql-snow">
