@@ -13,7 +13,7 @@ export const BoldPlugin = () => {
             onClick={() => {
                 editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
             }}
-            className={"toolbar-item spaced " + (isBold ? "active" : "")}
+            className={"toolbar-item " + (isBold ? "active" : "")}
             title={IS_MAC_OS ? "Bold (⌘B)" : "Bold (Ctrl+B)"}
             type="button"
             aria-label={`Format text as bold. Shortcut: ${

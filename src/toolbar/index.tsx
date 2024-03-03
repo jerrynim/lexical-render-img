@@ -21,8 +21,14 @@ export const Toolbar = () => {
             setIsBold(selection.hasFormat("bold"));
         }
     };
+
     useEffect(() => {
-        return editor.registerCommand(
+        editor.registerUpdateListener(({ editorState }) => {
+            editorState.read(() => {
+                onChangeSelection();
+            });
+        });
+        editor.registerCommand(
             SELECTION_CHANGE_COMMAND,
             () => {
                 onChangeSelection();
