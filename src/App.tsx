@@ -1,6 +1,6 @@
 import { http, HttpResponse, passthrough } from "msw";
 import { setupWorker } from "msw/browser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const items = Array(24)
@@ -18,8 +18,9 @@ const handlers = [
         if (!page) {
             return HttpResponse.json("page is required", { status: 400 });
         }
+        console.log(page, (page - 1) * 10, 10);
         return HttpResponse.json({
-            items: items.splice((page - 1) * 10, 10),
+            items: items.slice((page - 1) * 10, page * 10),
         });
     }),
     http.get("/items/max-length", ({ params }) => {
@@ -33,7 +34,7 @@ const worker = setupWorker(...handlers);
 await worker.start();
 const App = () => {
     useEffect(() => {
-        axios.get("/items?page=3").then((res) => {
+        axios.get(`/items?page=1`).then((res) => {
             console.log(res, "res");
         });
     }, []);
@@ -42,7 +43,6 @@ const App = () => {
             console.log(res, "max-length");
         });
     }, []);
-
     return (
         <div>
             <Pagination />
@@ -51,7 +51,13 @@ const App = () => {
 };
 
 const Pagination = () => {
-    return <div id="pagination"></div>;
+    return (
+        <div id="pagination" style={{ display: "flex" }}>
+            <button>{"<"}</button>
+
+            <button>{">"}</button>
+        </div>
+    );
 };
 
 export default App;
