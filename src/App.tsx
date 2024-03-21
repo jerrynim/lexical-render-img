@@ -34,12 +34,14 @@ const worker = setupWorker(...handlers);
 await worker.start();
 const App = () => {
     useEffect(() => {
-        axios.get(`/items?page=1`).then((res) => {
-            console.log(res, "res");
-        });
+        axios
+            .get<{ items: { text: string }[] }>(`/items?page=1`)
+            .then((res) => {
+                console.log(res, "res");
+            });
     }, []);
     useEffect(() => {
-        axios.get("/items/max-length").then((res) => {
+        axios.get<{ "max-length": number }>("/items/max-length").then((res) => {
             console.log(res, "max-length");
         });
     }, []);
