@@ -32,32 +32,71 @@ const handlers = [
 
 const worker = setupWorker(...handlers);
 await worker.start();
+
 const App = () => {
+    const [items, setItems] = useState<{ text: string }[]>([]);
+    const [maxLength, setMaxLength] = useState(0);
+    const [page, setPage] = useState(1);
+
     useEffect(() => {
+        console.log(page);
         axios
-            .get<{ items: { text: string }[] }>(`/items?page=1`)
+            .get<{ items: { text: string }[] }>(`/items?page=${page}`)
             .then((res) => {
                 console.log(res, "res");
+                setItems(res.data.items);
             });
-    }, []);
+    }, [page]);
+
     useEffect(() => {
         axios.get<{ "max-length": number }>("/items/max-length").then((res) => {
             console.log(res, "max-length");
+            setMaxLength(res.data["max-length"]);
+            //maxLength setValue << camelCase 카멜케이스는 프론트엔드만 써요 거의
+            // 백엔드는 database column 항상 언더바를 씀 max_length, item_info
         });
     }, []);
+    const maxPage = Math.ceil(maxLength / 10);
     return (
         <div>
-            <Pagination />
+            {items.map((item) => {
+                return <div key={item.text}>{item.text}</div>;
+            })}
+            <Pagination
+                maxPage={maxPage}
+                setPage={setPage}
+                currentPage={page}
+            />
         </div>
     );
 };
 
-const Pagination = () => {
+const Pagination = ({
+    maxPage,
+    setPage,
+    currentPage,
+}: {
+    maxPage: number;
+    setPage: any;
+    currentPage: number;
+}) => {
     return (
         <div id="pagination" style={{ display: "flex" }}>
-            <button>{"<"}</button>
+            <button disabled={currentPage === 1}>{"<"}</button>
+            {Array(maxPage)
+                .fill(null)
+                .map((item, index) => (
+                    <div
+                        style={{ padding: 4 }}
+                        onClick={() => {
+                            setPage(index + 1);
+                        }}
+                    >
+                        {index + 1}
+                    </div>
+                ))}
 
-            <button>{">"}</button>
+            <button disabled={currentPage === maxPage}>{">"}</button>
         </div>
     );
 };
